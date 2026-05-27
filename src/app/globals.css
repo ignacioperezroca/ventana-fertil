@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+:root {
+  --app-background: #fcf7f3;
+  --app-foreground: #24162f;
+  --app-surface: #fffaf7;
+  --app-surface-2: #f7efe8;
+  --app-border: #e8ddd7;
+  --app-primary: #4b2c55;
+  --app-primary-foreground: #ffffff;
+  --app-muted: #6f5c73;
+  --app-accent: #e4b733;
+  --app-rose: #d86f8f;
+  --app-success: #2f9466;
+  --app-warning: #d9892e;
+  --app-danger: #ca435e;
+  --app-deep-rose: #932b52;
+}
+
+@theme inline {
+  --color-app-background: var(--app-background);
+  --color-app-foreground: var(--app-foreground);
+  --color-app-surface: var(--app-surface);
+  --color-app-surface-2: var(--app-surface-2);
+  --color-app-border: var(--app-border);
+  --color-app-primary: var(--app-primary);
+  --color-app-primary-foreground: var(--app-primary-foreground);
+  --color-app-muted: var(--app-muted);
+  --color-app-accent: var(--app-accent);
+  --color-app-rose: var(--app-rose);
+  --color-app-success: var(--app-success);
+  --color-app-warning: var(--app-warning);
+  --color-app-danger: var(--app-danger);
+  --color-app-deep-rose: var(--app-deep-rose);
+  --font-sans: "Geist", "Geist Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", "Geist Mono Fallback", ui-monospace, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  margin: 0;
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+::selection {
+  background: rgba(75, 44, 85, 0.18);
+  color: var(--app-foreground);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+details summary::-webkit-details-marker {
+  display: none;
+}
