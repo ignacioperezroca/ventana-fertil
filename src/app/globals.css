@@ -65,3 +65,135 @@ textarea {
 details summary::-webkit-details-marker {
   display: none;
 }
+
+@keyframes vf-float {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes vf-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.99);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes vf-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes vf-pulse-soft {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  50% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+}
+
+@keyframes vf-orbit {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes vf-draw {
+  from {
+    stroke-dashoffset: 1000;
+    opacity: 0;
+  }
+  to {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+}
+
+.vf-animate-float {
+  animation: vf-float 7s ease-in-out infinite;
+}
+
+.vf-animate-fade-up {
+  animation: vf-fade-up 360ms ease-out both;
+}
+
+.vf-animate-shimmer {
+  background-size: 200% 200%;
+  animation: vf-shimmer 3.5s ease-in-out infinite;
+}
+
+.vf-animate-pulse-soft {
+  animation: vf-pulse-soft 4.5s ease-in-out infinite;
+}
+
+.vf-animate-orbit {
+  animation: vf-orbit 18s linear infinite;
+}
+
+.vf-animate-draw {
+  animation: vf-draw 900ms ease-out forwards;
+}
+
+.vf-press {
+  transition: transform 180ms ease, opacity 180ms ease, background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+}
+
+.vf-press:active {
+  transform: scale(0.98);
+}
+
+.vf-hover-card {
+  transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease, background-color 220ms ease;
+}
+
+.vf-hover-card:hover {
+  transform: translateY(-2px);
+}
+
+.vf-no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.vf-no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.vf-reduce-motion *,
+.vf-reduce-motion *::before,
+.vf-reduce-motion *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+  scroll-behavior: auto !important;
+}

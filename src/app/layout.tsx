@@ -1,5 +1,6 @@
-import type { Metadata } from "next";
+import type { Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { buildAppMetadata } from "@/lib/metadata";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -12,12 +13,13 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL("https://ventana-fertil.vercel.app"),
-  title: "🥚 Ventana Fértil | Simulador visual de ventana fértil",
-  description:
-    "Simulador educativo para entender ventana fértil, ovulación, incertidumbre del ciclo y recordatorios día por día.",
-  robots: { index: true, follow: true },
+export const metadata = buildAppMetadata();
+
+export const viewport: Viewport = {
+  themeColor: "#fbf6f2",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

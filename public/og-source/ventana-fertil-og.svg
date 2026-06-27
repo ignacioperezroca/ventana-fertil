@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fbf6f2"/>
+      <stop offset="52%" stop-color="#fffdfb"/>
+      <stop offset="100%" stop-color="#f6ece6"/>
+    </linearGradient>
+    <linearGradient id="plumBar" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0%" stop-color="#b73f61"/>
+      <stop offset="100%" stop-color="#4b2c55"/>
+    </linearGradient>
+    <linearGradient id="goldBar" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0%" stop-color="#f7d66b"/>
+      <stop offset="100%" stop-color="#dfb94c"/>
+    </linearGradient>
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="20" stdDeviation="24" flood-color="#24162f" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+  <rect width="100%" height="100%" rx="75.6" fill="url(#bg)"/>
+  
+      <g filter="url(#shadow)">
+        <rect x="72" y="50.4" width="1056" height="529.1999999999999" rx="31.5" fill="rgba(255,255,255,0.76)" stroke="#e8ddd7"/>
+      </g>
+      
+      
+    <g transform="translate(70 56)">
+      <rect width="324" height="58" rx="29" fill="rgba(255,255,255,0.85)" stroke="#e8ddd7"/>
+      
+    <g transform="translate(14 9) scale(0.46)">
+      <ellipse cx="32" cy="40" rx="26" ry="32" fill="#f7d66b" stroke="#4b2c55" stroke-width="3"/>
+      <ellipse cx="26" cy="31" rx="8" ry="12" fill="#fff8d9" opacity="0.9"/>
+      <path d="M18 45c6-5 13-8 19-8 6 0 13 3 19 8" stroke="#d86f8f" stroke-width="3.5" stroke-linecap="round"/>
+    </g>
+  
+      <text x="76" y="34" fill="#4b2c55" font-size="22" font-weight="700" font-family="sans-serif">Ventana Fértil</text>
+    </g>
+  
+      <text x="70" y="218" fill="#4b2c55" font-size="63" font-weight="700" font-family="sans-serif">Entendé tu ciclo, día por día.</text>
+      <text x="70" y="284" fill="#6f5c73" font-size="28" font-weight="400" font-family="sans-serif">Simulador visual para entender ovulación, ventana fértil e incertidumbre real del ciclo.</text>
+      
+    <g transform="translate(70 330)">
+      <rect width="162" height="42" rx="21" fill="#fff" stroke="#e8ddd7"/>
+      <text x="81" y="27" text-anchor="middle" fill="#4b2c55" font-size="18" font-weight="700" font-family="sans-serif">Ventana fértil</text>
+    </g>
+  
+      
+    <g transform="translate(228 330)">
+      <rect width="118" height="42" rx="21" fill="#fff" stroke="#e8ddd7"/>
+      <text x="59" y="27" text-anchor="middle" fill="#4b2c55" font-size="18" font-weight="700" font-family="sans-serif">Ovulación</text>
+    </g>
+  
+      
+    <g transform="translate(360 330)">
+      <rect width="153" height="42" rx="21" fill="#fff" stroke="#e8ddd7"/>
+      <text x="76.5" y="27" text-anchor="middle" fill="#4b2c55" font-size="18" font-weight="700" font-family="sans-serif">Incertidumbre</text>
+    </g>
+  
+      <g transform="translate(74 404)">
+        <rect width="520" height="166" rx="30" fill="#ffffff" stroke="#e8ddd7"/>
+        <text x="22" y="30" fill="#6f5c73" font-size="13" font-weight="700" letter-spacing="1.8" font-family="sans-serif">RESUMEN VISUAL</text>
+        <text x="22" y="74" fill="#4b2c55" font-size="24" font-weight="700" font-family="sans-serif">Ventana estimada</text>
+        <text x="22" y="116" fill="#6f5c73" font-size="20" font-weight="600" font-family="sans-serif">O-6 a O+1 · Pico O-3 / O-2</text>
+        <rect x="370" y="34" width="126" height="92" rx="24" fill="#faf7f3" stroke="#e8ddd7"/>
+        <text x="433" y="60" text-anchor="middle" fill="#6f5c73" font-size="12" font-weight="700" letter-spacing="1.6" font-family="sans-serif">CONFIANZA</text>
+        <text x="433" y="97" text-anchor="middle" fill="#4b2c55" font-size="28" font-weight="700" font-family="sans-serif">Media</text>
+      </g>
+      <g transform="translate(672 76)">
+        <rect width="392" height="478" rx="34" fill="rgba(255,255,255,0.9)" stroke="#e8ddd7" filter="url(#shadow)"/>
+        <text x="26" y="42" fill="#4b2c55" font-size="22" font-weight="700" font-family="sans-serif">Resumen del ciclo</text>
+        
+    <g transform="translate(22 66)">
+      <rect width="162" height="98" rx="24" fill="#ffffff" stroke="#e8ddd7" filter="url(#shadow)"/>
+      <text x="20" y="28" fill="#6f5c73" font-size="13" font-weight="700" letter-spacing="1.8" font-family="sans-serif">PICO</text>
+      <text x="20" y="64" fill="#4b2c55" font-size="25" font-weight="700" font-family="sans-serif">O-3</text>
+    </g>
+  
+        
+    <g transform="translate(198 66)">
+      <rect width="172" height="98" rx="24" fill="#ffffff" stroke="#e8ddd7" filter="url(#shadow)"/>
+      <text x="20" y="28" fill="#6f5c73" font-size="13" font-weight="700" letter-spacing="1.8" font-family="sans-serif">VENTANA</text>
+      <text x="20" y="64" fill="#1f1526" font-size="25" font-weight="700" font-family="sans-serif">8 días</text>
+    </g>
+  
+        
+    <g transform="translate(22 176)">
+      <rect width="162" height="98" rx="24" fill="#ffffff" stroke="#e8ddd7" filter="url(#shadow)"/>
+      <text x="20" y="28" fill="#6f5c73" font-size="13" font-weight="700" letter-spacing="1.8" font-family="sans-serif">CONFIANZA</text>
+      <text x="20" y="64" fill="#1f1526" font-size="25" font-weight="700" font-family="sans-serif">62%</text>
+    </g>
+  
+        
+    <g transform="translate(198 176)">
+      <rect width="172" height="98" rx="24" fill="#ffffff" stroke="#e8ddd7" filter="url(#shadow)"/>
+      <text x="20" y="28" fill="#6f5c73" font-size="13" font-weight="700" letter-spacing="1.8" font-family="sans-serif">LECTURA</text>
+      <text x="20" y="64" fill="#4b2c55" font-size="25" font-weight="700" font-family="sans-serif">Visual</text>
+    </g>
+  
+        <rect x="22" y="294" width="348" height="132" rx="26" fill="#fff" stroke="#e8ddd7"/>
+        <text x="44" y="324" fill="#6f5c73" font-size="13" font-weight="700" letter-spacing="1.5" font-family="sans-serif">CALENDARIO</text>
+        <g transform="translate(42 340)"><rect x="0" y="0" width="30" height="30" rx="9" fill="#fffdfb" stroke="#e8ddd7"/><rect x="40" y="0" width="30" height="30" rx="9" fill="#fffdfb" stroke="#e8ddd7"/><rect x="80" y="0" width="30" height="30" rx="9" fill="#fffdfb" stroke="#e8ddd7"/><rect x="120" y="0" width="30" height="30" rx="9" fill="#fffdfb" stroke="#e8ddd7"/><rect x="0" y="40" width="30" height="30" rx="9" fill="#d86f8f" stroke="#d86f8f"/><rect x="40" y="40" width="30" height="30" rx="9" fill="#b73f61" stroke="#b73f61"/><rect x="80" y="40" width="30" height="30" rx="9" fill="#f7d66b" stroke="#f7d66b"/><rect x="120" y="40" width="30" height="30" rx="9" fill="#72b48a" stroke="#72b48a"/></g>
+        <rect x="22" y="438" width="348" height="18" rx="9" fill="#f5ece6"/>
+        <rect x="22" y="438" width="230" height="18" rx="9" fill="url(#plumBar)"/>
+      </g>
+      <text x="70" y="590" fill="#6f5c73" font-size="19" font-weight="600" font-family="sans-serif">Simulador educativo y privado</text>
+    
+    
+</svg>

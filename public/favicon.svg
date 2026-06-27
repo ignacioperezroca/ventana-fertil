@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fbf6f2"/>
+      <stop offset="52%" stop-color="#fffdfb"/>
+      <stop offset="100%" stop-color="#f6ece6"/>
+    </linearGradient>
+    <linearGradient id="plumBar" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0%" stop-color="#b73f61"/>
+      <stop offset="100%" stop-color="#4b2c55"/>
+    </linearGradient>
+    <linearGradient id="goldBar" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0%" stop-color="#f7d66b"/>
+      <stop offset="100%" stop-color="#dfb94c"/>
+    </linearGradient>
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="20" stdDeviation="24" flood-color="#24162f" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+  <rect width="100%" height="100%" rx="61.44" fill="url(#bg)"/>
+  
+      <rect x="28" y="28" width="456" height="456" rx="120" fill="#fbf6f2"/>
+      <g transform="translate(92 74)">
+        <ellipse cx="160" cy="180" rx="116" ry="144" fill="#f7d66b" stroke="#4b2c55" stroke-width="12"/>
+        <ellipse cx="134" cy="130" rx="38" ry="56" fill="#fff9e0" opacity="0.92"/>
+        <path d="M88 206c28-28 64-42 72-42 10 0 46 14 74 42" stroke="#d86f8f" stroke-width="18" stroke-linecap="round"/>
+        <rect x="52" y="370" width="216" height="26" rx="13" fill="#4b2c55" opacity="0.16"/>
+      </g>
+    
+</svg>

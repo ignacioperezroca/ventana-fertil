@@ -1,0 +1,121 @@
+"use client";
+
+import { ArrowRight, Flame, Sparkles } from "lucide-react";
+
+import { formatDateLong, formatDateShort } from "@/lib/cycle";
+import { getPeakDates, getOvulationText, getSimpleStatusLabel } from "@/lib/fertility";
+import { getPersonalizedResultMessage, getResultStateFromSimulation } from "@/lib/personalization";
+import { buildMonthlyActionPlan } from "@/lib/resultSummary";
+import { ResultConfidencePill } from "@/components/result/ResultConfidencePill";
+import type { SimpleRegularity } from "@/lib/simple-storage";
+import type { SimulationResult } from "@/types";
+
+export function HeroResult({
+  simulation,
+  entryCount,
+  regularity,
+  isDemo = false,
+  lowAnxietyMode = false,
+  onExplain,
+  onNextAction,
+}: {
+  simulation: SimulationResult;
+  entryCount: number;
+  regularity: SimpleRegularity;
+  isDemo?: boolean;
+  lowAnxietyMode?: boolean;
+  onExplain: () => void;
+  onNextAction?: () => void;
+}) {
+  const peakDates = getPeakDates(simulation).map((date) => formatDateShort(date));
+  const ovulation = getOvulationText(simulation);
+  const status = getSimpleStatusLabel(simulation);
+  const actionPlan = buildMonthlyActionPlan(simulation);
+  const personalized = getPersonalizedResultMessage({
+    hasResult: true,
+    confidenceLabel: simulation.confidenceBand,
+    cycleRegularity: regularity,
+    isDemo,
+    historyCount: entryCount,
+    resultState: getResultStateFromSimulation(simulation),
+  });
+
+  return (
+    <section className="relative overflow-hidden rounded-[36px] border border-app-border bg-[linear-gradient(180deg,rgba(255,255,255,0.97)_0%,rgba(255,248,242,0.94)_100%)] p-4 shadow-[0_28px_80px_-48px_rgba(36,22,47,0.5)] sm:p-6">
+      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_10%_10%,rgba(216,111,143,0.12)_0%,transparent_32%),radial-gradient(circle_at_95%_100%,rgba(228,183,51,0.12)_0%,transparent_28%)]" aria-hidden="true" />
+
+      <div className="relative grid gap-5 lg:grid-cols-[1.2fr_0.8fr] lg:items-start">
+        <div>
+          <div className="flex flex-wrap items-center gap-2">
+            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-app-muted">Resultado del mes</p>
+            <span className="rounded-full border border-app-border bg-white/90 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-app-muted">{status}</span>
+          </div>
+
+          <div className="mt-4 rounded-[28px] border border-app-border bg-white/90 p-4 shadow-[0_18px_50px_-36px_rgba(36,22,47,0.28)]">
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-app-muted">Tu lectura de hoy</p>
+            <h2 className={`mt-2 text-2xl font-semibold tracking-tight sm:text-3xl ${personalized.statusTone === "lowConfidence" ? "text-app-rose" : "text-app-foreground"}`}>
+              {personalized.title}
+            </h2>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-app-muted">{personalized.subtitle}</p>
+            <div className="mt-3 inline-flex items-center rounded-full border border-app-border bg-app-surface-2 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-app-muted">
+              Siguiente paso · {personalized.actionLabel}
+            </div>
+          </div>
+
+          <p className="mt-3 max-w-2xl text-sm leading-6 text-app-muted">Los días de mayor fertilidad suelen aparecer antes de ovular.</p>
+
+          <div className="mt-5 grid gap-3">
+            <Line label="Días más fértiles" value={peakDates.join(", ") || "—"} icon={<Flame className="size-4 text-app-rose" />} />
+            <Line label="Ovulación estimada" value={ovulation} icon={<span aria-hidden="true">🥚</span>} />
+          </div>
+
+          <div className="mt-5 flex flex-wrap items-center gap-3">
+            <ResultConfidencePill simulation={simulation} entryCount={entryCount} regularity={regularity} lowAnxietyMode={lowAnxietyMode} />
+            <button
+              type="button"
+              onClick={onExplain}
+              className="vf-press inline-flex h-11 items-center justify-center rounded-full border border-app-border bg-white px-4 text-sm font-semibold text-app-foreground transition hover:border-app-primary/30 focus:outline-none focus:ring-2 focus:ring-app-primary/15"
+            >
+              Qué significa?
+              <Sparkles className="ml-2 size-4 text-app-primary" />
+            </button>
+          </div>
+        </div>
+
+        <div className="grid gap-3 rounded-[30px] border border-app-border bg-white/84 p-4 shadow-[0_18px_40px_-30px_rgba(36,22,47,0.35)]">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-app-muted">Próxima fecha clave</p>
+            <p className="mt-2 text-lg font-semibold text-app-foreground">{actionPlan?.nextKeyDateLabel ?? formatDateLong(simulation.ovulationDate)}</p>
+          </div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-app-muted">Siguiente paso</p>
+            <p className="mt-2 text-sm font-semibold text-app-foreground">{actionPlan?.suggestedAction ?? "Guardá recordatorios"}</p>
+          </div>
+          {onNextAction ? (
+            <button
+              type="button"
+              onClick={onNextAction}
+              className="vf-press inline-flex h-11 items-center justify-center rounded-full bg-app-primary px-4 text-sm font-semibold text-white transition hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-app-primary/20"
+            >
+              Ir al calendario
+              <ArrowRight className="ml-2 size-4" />
+            </button>
+          ) : null}
+          <p className="text-xs leading-5 text-app-muted">Estimación educativa. La ovulación puede moverse.</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Line({ label, value, icon }: { label: string; value: string; icon: React.ReactNode }) {
+  return (
+    <div className="flex items-start gap-3 rounded-[24px] border border-app-border bg-white p-4">
+      <div className="rounded-2xl border border-app-border bg-app-surface-2 p-3">{icon}</div>
+      <div className="min-w-0">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-app-muted">{label}</p>
+        <p className="mt-1 text-sm font-semibold leading-6 text-app-foreground">{value}</p>
+      </div>
+    </div>
+  );
+}

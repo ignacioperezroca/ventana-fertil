@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fbf6f2"/>
+      <stop offset="52%" stop-color="#fffdfb"/>
+      <stop offset="100%" stop-color="#f6ece6"/>
+    </linearGradient>
+    <linearGradient id="plumBar" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0%" stop-color="#b73f61"/>
+      <stop offset="100%" stop-color="#4b2c55"/>
+    </linearGradient>
+    <linearGradient id="goldBar" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0%" stop-color="#f7d66b"/>
+      <stop offset="100%" stop-color="#dfb94c"/>
+    </linearGradient>
+    <filter id="shadow" x="-40%" y="-40%" width="180%" height="180%">
+      <feDropShadow dx="0" dy="20" stdDeviation="24" flood-color="#24162f" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+  <rect width="100%" height="100%" rx="129.6" fill="url(#bg)"/>
+  
+      
+    <g transform="translate(72 68)">
+      <rect width="332" height="58" rx="29" fill="rgba(255,255,255,0.85)" stroke="#e8ddd7"/>
+      
+    <g transform="translate(14 9) scale(0.46)">
+      <ellipse cx="32" cy="40" rx="26" ry="32" fill="#f7d66b" stroke="#4b2c55" stroke-width="3"/>
+      <ellipse cx="26" cy="31" rx="8" ry="12" fill="#fff8d9" opacity="0.9"/>
+      <path d="M18 45c6-5 13-8 19-8 6 0 13 3 19 8" stroke="#d86f8f" stroke-width="3.5" stroke-linecap="round"/>
+    </g>
+  
+      <text x="76" y="34" fill="#4b2c55" font-size="22" font-weight="700" font-family="sans-serif">Ventana Fértil</text>
+    </g>
+  
+      <text x="72" y="224" fill="#4b2c55" font-size="72" font-weight="700" font-family="sans-serif">Ventana Fértil</text>
+      <text x="72" y="292" fill="#6f5c73" font-size="30" font-weight="400" font-family="sans-serif">Entendé tu ciclo, día por día.</text>
+      
+    <g transform="translate(72 338)">
+      <rect width="162" height="42" rx="21" fill="#fff" stroke="#e8ddd7"/>
+      <text x="81" y="27" text-anchor="middle" fill="#4b2c55" font-size="18" font-weight="700" font-family="sans-serif">Ventana fértil</text>
+    </g>
+  
+      
+    <g transform="translate(238 338)">
+      <rect width="118" height="42" rx="21" fill="#fff" stroke="#e8ddd7"/>
+      <text x="59" y="27" text-anchor="middle" fill="#4b2c55" font-size="18" font-weight="700" font-family="sans-serif">Ovulación</text>
+    </g>
+  
+      
+    <g transform="translate(370 338)">
+      <rect width="153" height="42" rx="21" fill="#fff" stroke="#e8ddd7"/>
+      <text x="76.5" y="27" text-anchor="middle" fill="#4b2c55" font-size="18" font-weight="700" font-family="sans-serif">Incertidumbre</text>
+    </g>
+  
+      <g transform="translate(72 428)">
+        <rect width="936" height="336" rx="34" fill="rgba(255,255,255,0.9)" stroke="#e8ddd7" filter="url(#shadow)"/>
+        <text x="28" y="44" fill="#6f5c73" font-size="14" font-weight="700" letter-spacing="1.8" font-family="sans-serif">SIMULADOR EDUCATIVO Y PRIVADO</text>
+        <rect x="28" y="74" width="308" height="220" rx="30" fill="#fff" stroke="#e8ddd7"/>
+        <g transform="translate(54 104)"><rect x="0" y="0" width="26" height="26" rx="9" fill="#fffdfb" stroke="#e8ddd7"/><rect x="34" y="0" width="26" height="26" rx="9" fill="#fffdfb" stroke="#e8ddd7"/><rect x="68" y="0" width="26" height="26" rx="9" fill="#fffdfb" stroke="#e8ddd7"/><rect x="102" y="0" width="26" height="26" rx="9" fill="#fffdfb" stroke="#e8ddd7"/><rect x="0" y="34" width="26" height="26" rx="9" fill="#d86f8f" stroke="#d86f8f"/><rect x="34" y="34" width="26" height="26" rx="9" fill="#b73f61" stroke="#b73f61"/><rect x="68" y="34" width="26" height="26" rx="9" fill="#f7d66b" stroke="#f7d66b"/><rect x="102" y="34" width="26" height="26" rx="9" fill="#72b48a" stroke="#72b48a"/></g>
+        <rect x="360" y="74" width="548" height="220" rx="30" fill="#fff" stroke="#e8ddd7"/>
+        <text x="388" y="116" fill="#4b2c55" font-size="26" font-weight="700" font-family="sans-serif">Marcadores por timing</text>
+        <text x="388" y="154" fill="#6f5c73" font-size="20" font-weight="500" font-family="sans-serif">Ovulación, ventana fértil e incertidumbre real.</text>
+        <g transform="translate(388 182)">
+          <rect width="188" height="76" rx="20" fill="#faf7f3" stroke="#e8ddd7"/>
+          <text x="22" y="29" fill="#6f5c73" font-size="12" font-weight="700" letter-spacing="1.6" font-family="sans-serif">PICO</text>
+          <text x="22" y="56" fill="#4b2c55" font-size="26" font-weight="700" font-family="sans-serif">O-3 · 26.7%</text>
+        </g>
+        <g transform="translate(592 182)">
+          <rect width="188" height="76" rx="20" fill="#faf7f3" stroke="#e8ddd7"/>
+          <text x="22" y="29" fill="#6f5c73" font-size="12" font-weight="700" letter-spacing="1.6" font-family="sans-serif">VENTANA</text>
+          <text x="22" y="56" fill="#4b2c55" font-size="26" font-weight="700" font-family="sans-serif">8 días</text>
+        </g>
+      </g>
+      <text x="72" y="1010" fill="#6f5c73" font-size="19" font-weight="600" font-family="sans-serif">Simulador educativo y privado</text>
+    
+</svg>

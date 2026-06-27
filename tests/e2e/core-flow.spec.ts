@@ -2,11 +2,10 @@ import { expect, test } from "@playwright/test";
 
 test("guest can load the calculator and demo result", async ({ page }) => {
   await page.goto("/");
-  await expect(page.getByRole("heading", { name: /Entendé tu ventana fértil/i })).toBeVisible();
-  await expect.poll(() => page.evaluate(() => window.localStorage.getItem("ventana-fertil:v1"))).not.toBeNull();
-  await page.locator("#hero").getByRole("button", { name: "Ver demo" }).click();
-  await expect(page.getByText("Demo cargada")).toBeVisible({ timeout: 2_000 });
-  await expect(page.getByText("Día actual del ciclo")).toBeVisible();
+  await expect(page.getByText("Ventana fértil estimada, lista para mover y explorar.")).toBeVisible();
+  await page.getByRole("button", { name: "Ver ejemplo" }).first().click();
+  await expect(page.getByText("Modo demo", { exact: true })).toBeVisible();
+  await expect(page.getByText("Tu ventana fértil estimada", { exact: true })).toBeVisible();
 });
 
 test("account entry points and legal pages render", async ({ page }) => {

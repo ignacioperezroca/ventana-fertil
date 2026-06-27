@@ -54,6 +54,7 @@ export interface VentanaFertilState {
   currentStep: number;
   selectedDate: string;
   calendarMonth: string;
+  isDemo: boolean;
   lastPeriodStart: string;
   averageCycleLength: number;
   minimumCycleLength: number;
@@ -69,9 +70,37 @@ export interface VentanaFertilState {
 }
 
 export interface StoredSnapshot {
-  version: number;
+  version: 1;
   updatedAt: string;
+  isDemo: boolean;
+  cycle: {
+    lastPeriodStart: string;
+    averageCycleLength: number;
+    minimumCycleLength: number;
+    maximumCycleLength: number;
+    regularity: CycleRegularity;
+  };
+  ovulation: {
+    mode: OvulationMethod;
+    knownOvulationDate: string;
+    lhSurgeDate: string;
+    lhResult: LhResult | "";
+  };
+  signals: BodySignals;
+  exposures: ExposureEntry[];
+  dailyLogs: Record<string, DailyLog>;
+  ui: {
+    currentStep: number;
+    selectedDate: string;
+    calendarMonth: string;
+    isDemo: boolean;
+  };
+}
+
+export interface LoadedStoredState {
   state: VentanaFertilState;
+  updatedAt: string;
+  migratedFromLegacy: boolean;
 }
 
 export interface RelativeRiskPoint {
@@ -165,4 +194,36 @@ export interface SimulationResult {
   reminders: ReminderEvent[];
   exposureInsights: ExposureInsight[];
   dayInsights: Record<string, DayInsight>;
+}
+
+export type PeriodEntrySource = "manual" | "demo" | "import";
+
+export interface PeriodEntry {
+  id: string;
+  periodStartDate: string;
+  periodEndDate?: string;
+  source: PeriodEntrySource;
+  createdAt: string;
+  updatedAt: string;
+  notes?: string;
+}
+
+export interface AppPreferences {
+  defaultCycleLength: number;
+  showPercentages: boolean;
+  reducedMotion?: boolean;
+  cycleRegularity?: CycleRegularity;
+}
+
+export interface AppState {
+  version: 2;
+  updatedAt: string;
+  preferences: AppPreferences;
+  entries: PeriodEntry[];
+  currentEntryId: string | null;
+}
+
+export interface AppStateWarning {
+  code: "legacy-migration" | "corrupt-storage" | "invalid-import";
+  message: string;
 }

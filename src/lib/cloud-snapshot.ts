@@ -1,80 +1,71 @@
-import { createDefaultState, sanitizeState } from "@/lib/storage";
-import type { VentanaFertilState } from "@/types";
+import { createDefaultAppState, getCurrentPeriodEntry } from "@/lib/repositories/cycleRepository";
+import type { AppState, CycleRegularity, PeriodEntry } from "@/types";
 import type { Json } from "@/types/database";
 
-export function stateToCloudSnapshot(state: VentanaFertilState) {
+export function stateToCloudSnapshot(state: AppState) {
+  const current = getCurrentPeriodEntry(state);
+  if (!current) return null;
+  const average = state.preferences.defaultCycleLength;
   return {
     cycle: {
-      periodStart: state.lastPeriodStart,
-      averageCycleLength: state.averageCycleLength,
-      minimumCycleLength: state.minimumCycleLength,
-      maximumCycleLength: state.maximumCycleLength,
-      regularity: state.regularity,
-      ovulationMethod: state.ovulationMethod,
-      knownOvulationDate: state.knownOvulationDate,
-      lhSurgeDate: state.lhSurgeDate,
-      lhResult: state.lhResult,
-      bodySignals: state.bodySignals,
+      periodStart: current.periodStartDate,
+      averageCycleLength: average,
+      minimumCycleLength: Math.max(15, average - 2),
+      maximumCycleLength: Math.min(60, average + 2),
+      regularity: state.preferences.cycleRegularity ?? "regular",
+      ovulationMethod: "calendar" as const,
+      knownOvulationDate: "",
+      lhSurgeDate: "",
+      lhResult: "" as const,
+      bodySignals: {},
       isActive: true,
     },
-    dailyLogs: Object.entries(state.dailyLogs).map(([logDate, log]) => ({
-      logDate, note: log.note.slice(0, 2000), symptoms: log.symptoms.slice(0, 1000),
-      bbt: parseTemperature(log.bbt), lhResult: log.lhResult, mucus: log.mucus,
-      cervixPosition: log.cervixPosition, sexMethods: log.sexMethods,
-      exposureNote: log.exposureNote.slice(0, 1000), stressLevel: log.stressLevel,
-      sleepQuality: log.sleepQuality, travelOrIllness: log.travelOrIllness,
-    })),
-    exposures: state.exposureEntries.map((entry) => ({
-      exposureDate: entry.date, methods: entry.methods, notes: entry.notes.slice(0, 1000),
-    })),
+    dailyLogs: [],
+    exposures: [],
+    sourceUpdatedAt: state.updatedAt || undefined,
   };
 }
 
-interface CloudData {
+export interface CloudData {
   cycles: Array<{
-    id: string; period_start: string; average_cycle_length: number; minimum_cycle_length: number;
-    maximum_cycle_length: number; regularity: string; ovulation_method: string;
-    known_ovulation_date: string | null; lh_surge_date: string | null; lh_result: string | null;
-    body_signals: Json; is_active: boolean;
+    id: string;
+    period_start: string;
+    average_cycle_length: number;
+    regularity: string;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
+    body_signals: Json;
   }>;
-  dailyLogs: Array<{
-    log_date: string; note: string | null; symptoms: string | null; bbt: number | null;
-    lh_result: string | null; mucus: string | null; cervix_position: string | null;
-    sex_methods: string[]; exposure_note: string | null; stress_level: string | null;
-    sleep_quality: string | null; travel_or_illness: boolean;
-  }>;
-  exposures: Array<{ id: string; exposure_date: string; methods: string[]; notes: string | null }>;
+  dailyLogs: unknown[];
+  exposures: unknown[];
 }
 
-export function cloudDataToState(cloud: CloudData) {
-  const cycle = cloud.cycles.find((item) => item.is_active) ?? cloud.cycles[0];
-  if (!cycle) return createDefaultState();
-  const base = createDefaultState();
-  return sanitizeState({
-    ...base,
-    currentStep: 5,
-    lastPeriodStart: cycle.period_start,
-    averageCycleLength: cycle.average_cycle_length,
-    minimumCycleLength: cycle.minimum_cycle_length,
-    maximumCycleLength: cycle.maximum_cycle_length,
-    regularity: cycle.regularity,
-    ovulationMethod: cycle.ovulation_method,
-    knownOvulationDate: cycle.known_ovulation_date ?? "",
-    lhSurgeDate: cycle.lh_surge_date ?? "",
-    lhResult: cycle.lh_result ?? "",
-    bodySignals: cycle.body_signals,
-    dailyLogs: Object.fromEntries(cloud.dailyLogs.map((log) => [log.log_date, {
-      note: log.note ?? "", symptoms: log.symptoms ?? "", bbt: log.bbt?.toString().replace(".", ",") ?? "",
-      lhResult: log.lh_result ?? "", mucus: log.mucus ?? "", cervixPosition: log.cervix_position ?? "",
-      sexMethods: log.sex_methods, exposureNote: log.exposure_note ?? "", stressLevel: log.stress_level ?? "",
-      sleepQuality: log.sleep_quality ?? "", travelOrIllness: log.travel_or_illness,
-    }])),
-    exposureEntries: cloud.exposures.map((entry) => ({ id: entry.id, date: entry.exposure_date, methods: entry.methods, notes: entry.notes ?? "" })),
-  });
+export function cloudDataToAppState(cloud: CloudData): AppState {
+  const ordered = [...cloud.cycles].sort((a, b) => Date.parse(b.updated_at) - Date.parse(a.updated_at));
+  const entries: PeriodEntry[] = ordered.map((cycle) => ({
+    id: cycle.id,
+    periodStartDate: cycle.period_start,
+    source: "manual",
+    createdAt: cycle.created_at,
+    updatedAt: cycle.updated_at,
+    notes: "",
+  }));
+  const active = ordered.find((cycle) => cycle.is_active) ?? ordered[0];
+  const fallback = createDefaultAppState();
+  return {
+    ...fallback,
+    updatedAt: active?.updated_at ?? new Date().toISOString(),
+    preferences: {
+      ...fallback.preferences,
+      defaultCycleLength: active?.average_cycle_length ?? 28,
+      cycleRegularity: normalizeRegularity(active?.regularity),
+    },
+    entries,
+    currentEntryId: active?.id ?? entries[0]?.id ?? null,
+  };
 }
 
-function parseTemperature(value: string) {
-  if (!value.trim()) return null;
-  const number = Number(value.replace(",", "."));
-  return Number.isFinite(number) ? number : null;
+function normalizeRegularity(value: string | undefined): CycleRegularity {
+  return value === "algo_variable" || value === "irregular" || value === "no_se" ? value : "regular";
 }

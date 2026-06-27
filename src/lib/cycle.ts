@@ -1,3 +1,4 @@
+import { escapeIcsText } from "@/lib/security";
 import type {
   BodySignals,
   CycleRegularity,
@@ -192,14 +193,6 @@ export function getRiskLabel(percent: number) {
   return RISK_LABELS[getRiskTone(percent)];
 }
 
-function escapeIcsText(text: string) {
-  return text
-    .replace(/\\/g, "\\\\")
-    .replace(/\r?\n/g, "\\n")
-    .replace(/;/g, "\\;")
-    .replace(/,/g, "\\,");
-}
-
 export function toIcsDateTime(date: Date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0");
@@ -241,6 +234,31 @@ export function buildReminderEvents(ovulationDate: Date) {
   });
 }
 
+export function buildNextPeriodReminderEvent(lastPeriodStart: string, averageCycleLength: number) {
+  const startDate = parseDate(lastPeriodStart);
+  const cycleLength = Number.isFinite(averageCycleLength) ? averageCycleLength : 28;
+  if (!startDate || cycleLength < 21 || cycleLength > 45) return null;
+
+  const nextPeriodDate = addDays(startDate, cycleLength);
+  const eventStart = new Date(nextPeriodDate.getFullYear(), nextPeriodDate.getMonth(), nextPeriodDate.getDate(), 8, 0, 0);
+
+  return {
+    id: `${toIcsDateTime(eventStart)}-next-period`,
+    offset: cycleLength,
+    title: "🥚 Cargar nuevo período",
+    badge: "📅",
+    date: formatDateInput(nextPeriodDate),
+    timeLabel: "08:00",
+    description: "Recordatorio para actualizar Ventana Fértil con el inicio del nuevo ciclo.",
+    startIso: toIcsDateTime(eventStart),
+  } satisfies ReminderEvent;
+}
+
+export function buildNextPeriodReminderIcs(lastPeriodStart: string, averageCycleLength: number) {
+  const event = buildNextPeriodReminderEvent(lastPeriodStart, averageCycleLength);
+  return event ? buildIcsFile([event]) : "";
+}
+
 export function buildIcsFile(events: ReminderEvent[]) {
   const lines = [
     "BEGIN:VCALENDAR",
@@ -270,58 +288,6 @@ export function buildIcsFile(events: ReminderEvent[]) {
 
   lines.push("END:VCALENDAR");
   return `${lines.join("\r\n")}\r\n`;
-}
-
-function selectRegularityPenalty(regularity: CycleRegularity) {
-  switch (regularity) {
-    case "regular":
-      return 0;
-    case "algo_variable":
-      return 8;
-    case "irregular":
-      return 18;
-    case "no_se":
-      return 10;
-    default:
-      return 0;
-  }
-}
-
-function selectMethodPenalty(method: string) {
-  switch (method) {
-    case "known":
-      return 0;
-    case "lh":
-      return 8;
-    case "calendar":
-      return 14;
-    case "unsure":
-      return 18;
-    default:
-      return 12;
-  }
-}
-
-function selectStressPenalty(level: BodySignals["stressLevel"]) {
-  switch (level) {
-    case "high":
-      return 5;
-    case "medium":
-      return 2;
-    default:
-      return 0;
-  }
-}
-
-function selectSleepPenalty(level: BodySignals["sleepQuality"]) {
-  switch (level) {
-    case "low":
-      return 5;
-    case "medium":
-      return 2;
-    default:
-      return 0;
-  }
 }
 
 function buildConfidenceHint(state: VentanaFertilState, uncertaintyScore: number) {
@@ -386,22 +352,20 @@ function buildUncertaintyHint(state: VentanaFertilState, uncertaintyScore: numbe
 }
 
 function collectUncertaintyScore(state: VentanaFertilState, varianceDays: number) {
-  let score = 0;
-  score += Math.min(28, varianceDays * 4);
-  score += selectRegularityPenalty(state.regularity);
-  score += selectMethodPenalty(state.ovulationMethod);
+  let score = 35;
 
-  if (state.ovulationMethod === "lh" && state.lhSurgeDate.trim()) score -= 4;
-  if (state.ovulationMethod === "known" && state.knownOvulationDate.trim()) score -= 2;
+  if (state.ovulationMethod === "known" && state.knownOvulationDate.trim()) score -= 20;
+  if (state.ovulationMethod === "lh" && state.lhSurgeDate.trim() && state.lhResult) score -= 10;
+  if (state.bodySignals.basalBodyTemperature.trim()) score -= 8;
 
-  if (state.bodySignals.basalBodyTemperature.trim()) score -= 6;
-  if (state.bodySignals.cervicalMucus) score -= 2;
-  if (state.bodySignals.cervixPosition) score -= 1;
-  if (state.bodySignals.restingHeartRate.trim()) score -= 1;
-  if (state.bodySignals.wristTemperatureTrend.trim()) score -= 1;
-  if (state.bodySignals.travelOrIllness) score += 7;
-  score += selectStressPenalty(state.bodySignals.stressLevel);
-  score += selectSleepPenalty(state.bodySignals.sleepQuality);
+  if (varianceDays > 1) {
+    score += Math.min(25, (varianceDays - 1) * 5);
+  }
+
+  if (state.regularity === "irregular") score += 20;
+  if (state.bodySignals.stressLevel === "high") score += 8;
+  if (state.bodySignals.sleepQuality === "low") score += 8;
+  if (state.bodySignals.travelOrIllness) score += 8;
 
   return clamp(Math.round(score), 0, 100);
 }
@@ -413,7 +377,7 @@ function buildRiskMarker(offset: number | null) {
       riskTone: "very-low" as RiskTone,
       riskLabel: "Muy bajo",
       windowLabel: "Sin ovulación calculada",
-      explanation: "No hay fecha de ovulación suficiente para ubicar este día en la curva.",
+      explanation: "No hay fecha de ovulación suficiente para ubicar este día en la curva de timing.",
       withinFertileWindow: false,
       withinPeakWindow: false,
     };
@@ -558,7 +522,7 @@ function buildExposureInsight(
   const label = formatDateLong(exposure.date);
   const explanation =
     offset === null
-      ? "No hay ovulación suficiente para ubicar esta exposición en la curva."
+      ? "No hay ovulación suficiente para ubicar esta exposición en la curva de timing."
       : marker.withinFertileWindow
         ? "Queda dentro de la ventana fértil base y se ve con un marcador educativo más alto."
         : "Queda fuera de la ventana fértil base; el marcador educativo es bajo y depende de la incertidumbre del ciclo.";
@@ -781,7 +745,6 @@ function determineOvulationDate(
 }
 
 function averageCycleToOvulationOffset(averageCycleLength: number) {
-  // Cycle day N is an N-1 date offset from the first day of menstruation.
   return clamp(Math.round(averageCycleLength - 15), 6, 30);
 }
 
