@@ -330,40 +330,49 @@ export default function VentanaFertilApp() {
             </div>
           </MotionPage>
         ) : (
-          <MotionPage reducedMotion={reducedMotion} className="grid gap-4">
-            <div ref={resultRef} className="grid gap-4">
-              {resultFlash ? (
-                <div className="inline-flex w-fit items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-800">
-                  {resultFlash}
-                </div>
-              ) : null}
-
-              <HeroResult
-                simulation={simulation}
-                entryCount={initialLoad.entryCount}
-                regularity={form.regularity}
-                isDemo={demoPreview || form.isDemo}
-                lowAnxietyMode={lowAnxietyMode}
-                onExplain={() => setExplanationOpen(true)}
-              />
-
-              <ConfidenceExplainer simulation={simulation} historyCount={initialLoad.entryCount} regularity={form.regularity} />
-
-              <SimpleScenarioPreview simulation={simulation} isDemo={demoPreview || form.isDemo} />
-
-              <ResultExplainer defaultOpen={false} />
-
-              <FertileWindowStrip simulation={simulation} cycleStart={safeLastPeriod} lowAnxietyMode={lowAnxietyMode} />
-
-              <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
-                <SharePreview simulation={simulation} onToast={pushToast} onRequestShare={handleOpenShareDialog} isDemo={demoPreview || form.isDemo} />
-                <PublicShareCard onNotify={pushToast} isDemo={demoPreview || form.isDemo} />
-              </div>
-
-              <ResultImageExport simulation={simulation} onToast={pushToast} />
-
+          <section aria-labelledby="resultado-del-mes" className="grid gap-3">
+            <div className="flex items-center gap-3 px-1">
+              <span className="h-px flex-1 bg-app-border/80" aria-hidden="true" />
+              <p id="resultado-del-mes" className="text-xs font-semibold uppercase tracking-[0.24em] text-app-muted">
+                Resultado del mes
+              </p>
+              <span className="h-px flex-1 bg-app-border/80" aria-hidden="true" />
             </div>
-          </MotionPage>
+
+            <MotionPage reducedMotion={reducedMotion} className="grid gap-4">
+              <div ref={resultRef} className="grid gap-4">
+                {resultFlash ? (
+                  <div className="inline-flex w-fit items-center gap-2 rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.18em] text-emerald-800">
+                    {resultFlash}
+                  </div>
+                ) : null}
+
+                <HeroResult
+                  simulation={simulation}
+                  entryCount={initialLoad.entryCount}
+                  regularity={form.regularity}
+                  isDemo={demoPreview || form.isDemo}
+                  lowAnxietyMode={lowAnxietyMode}
+                  onExplain={() => setExplanationOpen(true)}
+                />
+
+                <ConfidenceExplainer simulation={simulation} historyCount={initialLoad.entryCount} regularity={form.regularity} />
+
+                <SimpleScenarioPreview simulation={simulation} isDemo={demoPreview || form.isDemo} />
+
+                <ResultExplainer defaultOpen={false} />
+
+                <FertileWindowStrip simulation={simulation} cycleStart={safeLastPeriod} lowAnxietyMode={lowAnxietyMode} />
+
+                <div className="grid gap-4 lg:grid-cols-[1.1fr_0.9fr]">
+                  <SharePreview simulation={simulation} onToast={pushToast} onRequestShare={handleOpenShareDialog} isDemo={demoPreview || form.isDemo} />
+                  <PublicShareCard onNotify={pushToast} isDemo={demoPreview || form.isDemo} />
+                </div>
+
+                <ResultImageExport simulation={simulation} onToast={pushToast} />
+              </div>
+            </MotionPage>
+          </section>
         )}
 
         <SeoContent isDemo={demoPreview || form.isDemo} />
