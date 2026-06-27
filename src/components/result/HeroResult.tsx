@@ -101,7 +101,10 @@ export function HeroResult({
               <ArrowRight className="ml-2 size-4" />
             </button>
           ) : null}
-          <p className="text-xs leading-5 text-app-muted">Estimación educativa. La ovulación puede moverse.</p>
+          <div className="inline-flex items-center rounded-full border border-app-border bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-app-muted">
+            Estimación educativa
+          </div>
+          <p className="mt-2 text-xs leading-5 text-app-muted">La ovulación puede moverse.</p>
         </div>
       </div>
     </section>

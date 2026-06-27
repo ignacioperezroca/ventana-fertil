@@ -456,17 +456,22 @@ export default function VentanaFertilApp() {
                 <SimpleCalendarActions simulation={simulation} lastPeriodStart={safeLastPeriod} averageCycleLength={form.averageCycleLength} onToast={pushToast} isDemo={demoPreview || form.isDemo} />
               </div>
 
-              <div className="grid gap-4 lg:grid-cols-[1fr_1fr]">
-                <PrivacyTrustCard isDemo={demoPreview || form.isDemo} />
-                <DisplayPreferences
-                  showPercentages={showPercentages}
-                  reducedMotion={motionPreference}
-                  onChange={handlePreferenceChange}
-                  onMotionChange={handleMotionPreferenceChange}
-                />
-              </div>
+              <PrivacyTrustCard isDemo={demoPreview || form.isDemo} />
 
-              <FeedbackCard hasResult={hasResult} isDemo={demoPreview || form.isDemo} onNotify={pushToast} />
+              <details className="rounded-[30px] border border-app-border bg-[rgba(255,255,255,0.92)] p-4 shadow-[0_22px_70px_-44px_rgba(36,22,47,0.32)] sm:p-5">
+                <summary className="cursor-pointer list-none text-sm font-semibold text-app-foreground">
+                  Más opciones
+                </summary>
+                <div className="mt-4 grid gap-4">
+                  <DisplayPreferences
+                    showPercentages={showPercentages}
+                    reducedMotion={motionPreference}
+                    onChange={handlePreferenceChange}
+                    onMotionChange={handleMotionPreferenceChange}
+                  />
+                  <FeedbackCard hasResult={hasResult} isDemo={demoPreview || form.isDemo} onNotify={pushToast} />
+                </div>
+              </details>
 
               {showHistoryTeaser ? (
                 <details className="rounded-[30px] border border-app-border bg-[rgba(255,255,255,0.92)] p-4 shadow-[0_22px_70px_-44px_rgba(36,22,47,0.32)] sm:p-5">

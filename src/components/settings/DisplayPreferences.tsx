@@ -20,7 +20,7 @@ export function DisplayPreferences({
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-app-muted">Preferencias</p>
-          <h3 className="mt-2 text-xl font-semibold text-app-foreground">Mostrar porcentajes</h3>
+          <h3 className="mt-2 text-xl font-semibold text-app-foreground">Porcentajes</h3>
           <p className="mt-2 text-sm leading-6 text-app-muted">Si lo apagás, verás Bajo / Moderado / Alto / Muy alto.</p>
         </div>
         <button

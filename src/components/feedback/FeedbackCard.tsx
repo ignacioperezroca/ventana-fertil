@@ -94,11 +94,11 @@ export function FeedbackCard({
     return (
       <section className="rounded-[30px] border border-app-border bg-white/92 p-4 shadow-[0_22px_70px_-44px_rgba(36,22,47,0.32)] sm:p-5">
         <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.24em] text-app-muted">Feedback</p>
-            <h3 className="mt-2 text-xl font-semibold text-app-foreground">Gracias por tu respuesta</h3>
-            <p className="mt-2 text-sm leading-6 text-app-muted">Guardamos tu opinión en este navegador.</p>
-          </div>
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-app-muted">Opinión</p>
+          <h3 className="mt-2 text-xl font-semibold text-app-foreground">Gracias por tu respuesta</h3>
+          <p className="mt-2 text-sm leading-6 text-app-muted">Guardamos tu opinión en este navegador.</p>
+        </div>
           <div className="rounded-2xl border border-app-border bg-white p-3 text-app-primary">
             <Check className="size-5" />
           </div>
@@ -114,7 +114,7 @@ export function FeedbackCard({
     <section className="rounded-[30px] border border-app-border bg-white/92 p-4 shadow-[0_22px_70px_-44px_rgba(36,22,47,0.32)] sm:p-5">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-app-muted">Feedback</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-app-muted">Opinión</p>
           <h3 className="mt-2 text-xl font-semibold text-app-foreground">Te sirvió el resultado?</h3>
           <p className="mt-2 text-sm leading-6 text-app-muted">Tu respuesta queda local y nos ayuda a mejorar la claridad.</p>
         </div>
