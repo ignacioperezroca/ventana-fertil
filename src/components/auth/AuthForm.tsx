@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Loader2 } from "lucide-react";
 
 import { createClient } from "@/lib/supabase/client";
 
@@ -22,28 +23,55 @@ export function AuthForm({ mode }: { mode: Mode }) {
   const [status, setStatus] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
+  function getRedirectTo(nextPath?: string | null) {
+    const next = nextPath?.startsWith("/") ? nextPath : "/";
+    return `${window.location.origin}/auth/callback?next=${encodeURIComponent(next)}`;
+  }
+
+  async function signInWithGoogle() {
+    setPending(true);
+    setStatus(null);
+    try {
+      const supabase = createClient();
+      const next = new URLSearchParams(window.location.search).get("next");
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: getRedirectTo(next),
+          queryParams: {
+            prompt: "select_account",
+          },
+        },
+      });
+      if (error) throw error;
+    } catch {
+      setStatus("No pudimos iniciar con Google. Probá de nuevo o usá email y contraseña.");
+      setPending(false);
+    }
+  }
+
   async function submit(event: React.FormEvent) {
     event.preventDefault();
     setPending(true);
     setStatus(null);
     try {
       const supabase = createClient();
+      const next = new URLSearchParams(window.location.search).get("next");
       if (mode === "signup") {
         const { error } = await supabase.auth.signUp({
           email, password,
-          options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+          options: { emailRedirectTo: getRedirectTo(next ?? "/") },
         });
         if (error) throw error;
         setStatus("Revisá tu email para confirmar la cuenta.");
       } else if (mode === "login") {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
-        const next = new URLSearchParams(window.location.search).get("next");
-        router.replace(next?.startsWith("/") ? next : "/account");
+        router.replace(next?.startsWith("/") ? next : "/");
         router.refresh();
       } else if (mode === "forgot") {
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
-          redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
+          redirectTo: getRedirectTo("/reset-password"),
         });
         if (error) throw error;
         setStatus("Te enviamos un enlace para crear una nueva contraseña.");
@@ -76,6 +104,17 @@ export function AuthForm({ mode }: { mode: Mode }) {
             <label className="block text-sm font-semibold">Contraseña
               <input className="mt-2 min-h-12 w-full rounded-xl border border-app-border px-3" type="password" minLength={8} autoComplete={mode === "login" ? "current-password" : "new-password"} required value={password} onChange={(e) => setPassword(e.target.value)} />
             </label>
+          )}
+          {(mode === "login" || mode === "signup") && (
+            <button
+              type="button"
+              onClick={signInWithGoogle}
+              disabled={pending}
+              className="flex min-h-12 w-full items-center justify-center gap-2 rounded-xl border border-app-border px-4 font-semibold text-app-foreground transition hover:bg-app-background disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {pending ? <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" /> : null}
+              Continuar con Google
+            </button>
           )}
           <button disabled={pending} className="min-h-12 w-full rounded-xl bg-app-primary px-4 font-bold text-white disabled:opacity-60">
             {pending ? "Procesando…" : copy[mode].action}
