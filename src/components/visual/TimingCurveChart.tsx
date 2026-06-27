@@ -23,7 +23,7 @@ export function TimingCurveChart({ points }: { points: RelativeRiskPoint[] }) {
     <div className="rounded-[30px] border border-app-border bg-white/92 p-4 shadow-[0_20px_50px_-38px_rgba(36,22,47,0.34)]">
       <div className="flex items-start justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-app-muted">Timing</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.24em] text-app-muted">Curva</p>
           <p className="mt-1 text-sm text-app-muted">Curva visual del marcador estimado.</p>
         </div>
         <Tooltip label="Pico en O-3 / O-2">
@@ -32,7 +32,7 @@ export function TimingCurveChart({ points }: { points: RelativeRiskPoint[] }) {
       </div>
 
       <div className="mt-4 overflow-hidden rounded-[24px] border border-app-border bg-[linear-gradient(180deg,#fffdfb_0%,#fff6f1_100%)]">
-        <svg viewBox={`0 0 ${width} ${height}`} className="h-auto w-full" role="img" aria-label="Curva de timing por día relativo a la ovulación">
+        <svg viewBox={`0 0 ${width} ${height}`} className="h-auto w-full" role="img" aria-label="Curva del marcador por día relativo a la ovulación">
           <defs>
             <linearGradient id="vf-timing-fill" x1="0" x2="0" y1="0" y2="1">
               <stop offset="0%" stopColor="rgba(216,111,143,0.45)" />

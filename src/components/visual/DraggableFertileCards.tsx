@@ -30,7 +30,7 @@ export function DraggableFertileCards({
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-app-muted">Marcadores</p>
           <h3 className="mt-2 text-xl font-semibold text-app-foreground">Tus 8 días clave</h3>
-          <p className="mt-2 text-sm leading-6 text-app-muted">Marcador estimado por timing. Deslizá las tarjetas para darles un toque más táctil.</p>
+          <p className="mt-2 text-sm leading-6 text-app-muted">Marcador estimado. Deslizá las tarjetas para darles un toque más táctil.</p>
         </div>
         <div className="hidden items-center gap-2 rounded-full border border-app-border bg-white px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-app-muted sm:flex">
           <Sparkles className="size-3.5 text-app-accent" />

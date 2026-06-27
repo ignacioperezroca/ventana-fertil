@@ -22,7 +22,7 @@ export function getCurrentDayStatus(simulation: SimulationResult): CurrentDaySta
       label: "Ovulación estimada",
       short: "La fecha calculada queda en el día de ovulación del modelo.",
       badge: "high",
-      cta: "Ver timing",
+      cta: "Ver marcador",
     };
   }
 
@@ -40,7 +40,7 @@ export function getCurrentDayStatus(simulation: SimulationResult): CurrentDaySta
       label: "Ventana fértil estimada",
       short: "La fecha cae dentro de la ventana base del modelo.",
       badge: "moderate",
-      cta: "Ver timing",
+      cta: "Ver marcador",
     };
   }
 
@@ -55,7 +55,7 @@ export function getCurrentDayStatus(simulation: SimulationResult): CurrentDaySta
 
   return {
     label: "Fuera de ventana estimada",
-    short: "El marcador por timing queda bajo fuera de la ventana fértil base.",
+    short: "El marcador por día queda bajo fuera de la ventana fértil base.",
     badge: "very-low",
     cta: "Ver calendario",
   };

@@ -70,7 +70,7 @@ export function FertileTimeline({ simulation, lowAnxietyMode = false }: { simula
           {current.offset === 0 ? <Egg className="size-4 text-app-primary" /> : <Flame className="size-4 text-app-accent" />}
           {current.label} · {current.date ? formatDateShort(current.date) : "—"}
         </div>
-        <p className="mt-2 text-sm leading-6 text-app-muted">{current.offset >= -4 && current.offset <= -1 ? "El marcador sube antes de ovular." : "Marcador educativo por timing."}</p>
+        <p className="mt-2 text-sm leading-6 text-app-muted">{current.offset >= -4 && current.offset <= -1 ? "El marcador sube antes de ovular." : "Marcador educativo por día."}</p>
       </div>
     </div>
   );

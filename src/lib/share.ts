@@ -20,7 +20,7 @@ export function getAppShareMessage() {
 }
 
 export function getPartnerSummaryText() {
-  return safeShareText("Estoy usando 🥚 Ventana Fértil para entender mejor el ciclo y la ventana fértil estimada. La app muestra marcadores educativos por timing y también aclara la incertidumbre del calendario.");
+  return safeShareText("Estoy usando 🥚 Ventana Fértil para entender mejor el ciclo y la ventana fértil estimada. La app muestra marcadores educativos por día y también aclara la incertidumbre del calendario.");
 }
 
 export function getPartnerContextText(contextLabel: string) {

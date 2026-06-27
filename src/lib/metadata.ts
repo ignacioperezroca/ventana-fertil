@@ -11,7 +11,7 @@ export const SEO_KEYWORDS = [
   "ventana fértil estimada",
   "ovulación estimada",
   "simulador educativo",
-  "marcador por timing",
+  "marcador por día",
   "privacidad local",
 ];
 

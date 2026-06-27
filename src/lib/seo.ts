@@ -8,7 +8,7 @@ export interface FaqItem {
 export const FAQ_ITEMS: FaqItem[] = [
   {
     question: "Qué es la ventana fértil?",
-    answer: "Es el tramo del ciclo en el que el timing se lee con más atención porque se acerca la ovulación estimada.",
+    answer: "Es el tramo del ciclo en el que el día se lee con más atención porque se acerca la ovulación estimada.",
   },
   {
     question: "Cómo se estima la ovulación?",
@@ -28,7 +28,7 @@ export const FAQ_ITEMS: FaqItem[] = [
   },
   {
     question: "Qué significa marcador estimado?",
-    answer: "Es un nivel educativo por timing, no una lectura personal definitiva.",
+    answer: "Es un nivel educativo por día, no una lectura personal definitiva.",
   },
   {
     question: "Puedo compartir el resultado?",

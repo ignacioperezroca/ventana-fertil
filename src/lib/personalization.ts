@@ -76,7 +76,7 @@ export function getPersonalizedResultMessage(context: PersonalizationContext): P
     default:
       return {
         title: "Estás dentro de tu ventana fértil estimada",
-        subtitle: "Mirar los días de mayor fertilidad te ayuda a leer mejor el timing del mes.",
+        subtitle: "Mirar los días de mayor fertilidad te ayuda a leer mejor el mes.",
         actionLabel: "Ver días de mayor fertilidad",
         statusTone: "current",
       };

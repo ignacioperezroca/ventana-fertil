@@ -55,7 +55,7 @@ export function buildDailyInsight(input: DailyInsightInput): DailyInsightResult 
   if (input.relationToOvulation >= -3 && input.relationToOvulation <= -2) {
     return {
       title: "Hoy cae en una zona de mayor atención",
-      summary: "Este momento suele quedar cerca del pico del marcador por timing.",
+      summary: "Este momento suele quedar cerca del pico del marcador por día.",
       status: "Zona pico",
       level: markerLabel,
       recommendedAction: "Ver explicación",
@@ -77,7 +77,7 @@ export function buildDailyInsight(input: DailyInsightInput): DailyInsightResult 
   if (input.relationToOvulation < -6 || input.relationToOvulation > 1) {
     return {
       title: "Hoy parece estar fuera de la ventana fértil estimada",
-      summary: "El marcador por timing es bajo si la ovulación estimada es correcta.",
+      summary: "El marcador por día es bajo si la ovulación estimada es correcta.",
       status: exposureCount > 0 ? "Fuera de ventana con contexto" : "Fuera de ventana estimada",
       level: markerLabel,
       recommendedAction: input.uncertaintyScore >= 45 ? "Revisá la incertidumbre del ciclo" : "Ver calendario",
@@ -87,7 +87,7 @@ export function buildDailyInsight(input: DailyInsightInput): DailyInsightResult 
 
   return {
     title: "Hoy sigue dentro de la ventana fértil estimada",
-    summary: "El marcador por timing todavía se lee con atención porque el ciclo está dentro del tramo base.",
+    summary: "El marcador por día todavía se lee con atención porque el ciclo está dentro del tramo base.",
     status: "Ventana fértil estimada",
     level: markerLabel,
     recommendedAction: "Ver explicación",

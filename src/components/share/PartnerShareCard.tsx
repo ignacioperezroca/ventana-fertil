@@ -59,7 +59,7 @@ export function PartnerShareCard({
 
       <div className="mt-4 rounded-[24px] border border-app-border bg-white p-4">
         <p className="text-sm font-semibold text-app-foreground">Estoy usando 🥚 Ventana Fértil para entender mejor el ciclo y la ventana fértil estimada.</p>
-        <p className="mt-2 text-sm leading-6 text-app-muted">La app muestra marcadores educativos por timing y también aclara la incertidumbre del calendario.</p>
+        <p className="mt-2 text-sm leading-6 text-app-muted">La app muestra marcadores educativos por día y también aclara la incertidumbre del calendario.</p>
         {lowAnxietyMode ? <p className="mt-2 text-xs leading-5 text-app-muted">Modo baja ansiedad activo: las cifras exactas se muestran menos.</p> : null}
       </div>
 

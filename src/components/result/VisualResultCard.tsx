@@ -64,7 +64,7 @@ export function VisualResultCard({
           </button>
           <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-app-muted">
             <Sparkles className="size-3.5 text-app-accent" />
-            Marcador por timing
+            Marcador por día
             <Flame className="ml-auto size-3.5 text-app-rose" />
           </div>
         </div>
