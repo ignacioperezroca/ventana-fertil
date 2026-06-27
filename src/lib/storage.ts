@@ -236,6 +236,7 @@ export function saveStoredState(state: VentanaFertilState) {
     state: sanitizeState(state),
   };
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(snapshot));
+  window.dispatchEvent(new CustomEvent("ventana-fertil:local-state-saved"));
 }
 
 export function clearStoredState() {

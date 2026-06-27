@@ -781,7 +781,8 @@ function determineOvulationDate(
 }
 
 function averageCycleToOvulationOffset(averageCycleLength: number) {
-  return clamp(Math.round(averageCycleLength - 14), 7, 31);
+  // Cycle day N is an N-1 date offset from the first day of menstruation.
+  return clamp(Math.round(averageCycleLength - 15), 6, 30);
 }
 
 function buildSelectedReason(

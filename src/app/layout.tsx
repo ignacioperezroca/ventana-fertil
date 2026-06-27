@@ -17,6 +17,7 @@ export const metadata: Metadata = {
   title: "🥚 Ventana Fértil | Simulador visual de ventana fértil",
   description:
     "Simulador educativo para entender ventana fértil, ovulación, incertidumbre del ciclo y recordatorios día por día.",
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({

@@ -596,7 +596,7 @@ export default function VentanaFertilApp() {
                 <div className={`${PANEL} p-4`}>
                   <p className="text-sm font-semibold text-app-foreground">Aviso claro</p>
                   <p className="mt-2 text-sm leading-6 text-app-muted">
-                    Esta herramienta es educativa. No reemplaza consulta médica y no debe usarse como método anticonceptivo principal.
+                    Esta herramienta es educativa. No reemplaza consulta médica y no debe usarse como anticoncepción.
                   </p>
                 </div>
                 <div className={`${PANEL} p-4`}>
@@ -2126,8 +2126,8 @@ function SafetySection() {
         </div>
       </div>
       <div className="mt-4 space-y-3 text-sm leading-6 text-app-muted">
-        <p>Este simulador es educativo. No es un método anticonceptivo, no es un dispositivo médico y no reemplaza una consulta profesional.</p>
-        <p>No habla de “días seguros”. Habla de estimaciones, incertidumbre y marcadores relativos por día.</p>
+        <p>Este simulador es educativo. No debe usarse como anticoncepción, no es un dispositivo médico y no reemplaza una consulta profesional.</p>
+        <p>Las fechas son estimaciones con incertidumbre y marcadores relativos por día.</p>
         <p>Si hubo sexo sin protección en los últimos 5 días, consultá cuanto antes a una farmacia o a ginecología para hablar de anticoncepción de emergencia y otras opciones.</p>
         <p>Si querés hacer un test de embarazo, suele tener más sentido desde el primer día de atraso o unos 14 días después de la relación.</p>
       </div>
