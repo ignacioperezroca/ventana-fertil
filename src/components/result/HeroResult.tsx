@@ -1,11 +1,10 @@
 "use client";
 
-import { Flame, Sparkles } from "lucide-react";
+import { Flame } from "lucide-react";
 
 import { formatDateShort } from "@/lib/cycle";
 import { getPeakDates, getOvulationText, getSimpleStatusLabel } from "@/lib/fertility";
 import { getPersonalizedResultMessage, getResultStateFromSimulation } from "@/lib/personalization";
-import { ResultConfidencePill } from "@/components/result/ResultConfidencePill";
 import type { SimpleRegularity } from "@/lib/simple-storage";
 import type { SimulationResult } from "@/types";
 
@@ -14,15 +13,11 @@ export function HeroResult({
   entryCount,
   regularity,
   isDemo = false,
-  lowAnxietyMode = false,
-  onExplain,
 }: {
   simulation: SimulationResult;
   entryCount: number;
   regularity: SimpleRegularity;
   isDemo?: boolean;
-  lowAnxietyMode?: boolean;
-  onExplain: () => void;
 }) {
   const peakDates = getPeakDates(simulation).map((date) => formatDateShort(date));
   const ovulation = getOvulationText(simulation);
@@ -53,9 +48,6 @@ export function HeroResult({
               {personalized.title}
             </h2>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-app-muted">{personalized.subtitle}</p>
-            <div className="mt-3 inline-flex items-center rounded-full border border-app-border bg-app-surface-2 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-app-muted">
-              Siguiente paso · {personalized.actionLabel}
-            </div>
           </div>
 
           <p className="mt-3 max-w-2xl text-sm leading-6 text-app-muted">Los días de mayor fertilidad suelen aparecer antes de ovular.</p>
@@ -63,18 +55,6 @@ export function HeroResult({
           <div className="mt-5 grid gap-3">
             <Line label="Días más fértiles" value={peakDates.join(", ") || "—"} icon={<Flame className="size-4 text-app-rose" />} />
             <Line label="Ovulación estimada" value={ovulation} icon={<span aria-hidden="true">🥚</span>} />
-          </div>
-
-          <div className="mt-5 flex flex-wrap items-center gap-3">
-            <ResultConfidencePill simulation={simulation} entryCount={entryCount} regularity={regularity} lowAnxietyMode={lowAnxietyMode} />
-            <button
-              type="button"
-              onClick={onExplain}
-              className="vf-press inline-flex h-11 items-center justify-center rounded-full border border-app-border bg-white px-4 text-sm font-semibold text-app-foreground transition hover:border-app-primary/30 focus:outline-none focus:ring-2 focus:ring-app-primary/15"
-            >
-              Qué significa?
-              <Sparkles className="ml-2 size-4 text-app-primary" />
-            </button>
           </div>
         </div>
 

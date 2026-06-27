@@ -10,9 +10,6 @@ import { SimplePeriodInput } from "@/components/input/SimplePeriodInput";
 import { MotionPage } from "@/components/motion/MotionPage";
 import { EmptyIllustration } from "@/components/visual/EmptyIllustration";
 import { HeroResult } from "@/components/result/HeroResult";
-import { ConfidenceExplainer } from "@/components/result/ConfidenceExplainer";
-import { ResultExplainer } from "@/components/result/ResultExplainer";
-import { SimpleScenarioPreview } from "@/components/result/SimpleScenarioPreview";
 import { FertileWindowStrip } from "@/components/result/FertileWindowStrip";
 import { SharePreview } from "@/components/share/SharePreview";
 import { PublicShareCard } from "@/components/share/PublicShareCard";
@@ -352,15 +349,7 @@ export default function VentanaFertilApp() {
                   entryCount={initialLoad.entryCount}
                   regularity={form.regularity}
                   isDemo={demoPreview || form.isDemo}
-                  lowAnxietyMode={lowAnxietyMode}
-                  onExplain={() => setExplanationOpen(true)}
                 />
-
-                <ConfidenceExplainer simulation={simulation} historyCount={initialLoad.entryCount} regularity={form.regularity} />
-
-                <SimpleScenarioPreview simulation={simulation} isDemo={demoPreview || form.isDemo} />
-
-                <ResultExplainer defaultOpen={false} />
 
                 <FertileWindowStrip simulation={simulation} cycleStart={safeLastPeriod} lowAnxietyMode={lowAnxietyMode} />
 
