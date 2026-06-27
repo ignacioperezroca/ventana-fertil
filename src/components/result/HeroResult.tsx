@@ -1,11 +1,10 @@
 "use client";
 
-import { ArrowRight, Flame, Sparkles } from "lucide-react";
+import { Flame, Sparkles } from "lucide-react";
 
-import { formatDateLong, formatDateShort } from "@/lib/cycle";
+import { formatDateShort } from "@/lib/cycle";
 import { getPeakDates, getOvulationText, getSimpleStatusLabel } from "@/lib/fertility";
 import { getPersonalizedResultMessage, getResultStateFromSimulation } from "@/lib/personalization";
-import { buildMonthlyActionPlan } from "@/lib/resultSummary";
 import { ResultConfidencePill } from "@/components/result/ResultConfidencePill";
 import type { SimpleRegularity } from "@/lib/simple-storage";
 import type { SimulationResult } from "@/types";
@@ -17,7 +16,6 @@ export function HeroResult({
   isDemo = false,
   lowAnxietyMode = false,
   onExplain,
-  onNextAction,
 }: {
   simulation: SimulationResult;
   entryCount: number;
@@ -25,12 +23,10 @@ export function HeroResult({
   isDemo?: boolean;
   lowAnxietyMode?: boolean;
   onExplain: () => void;
-  onNextAction?: () => void;
 }) {
   const peakDates = getPeakDates(simulation).map((date) => formatDateShort(date));
   const ovulation = getOvulationText(simulation);
   const status = getSimpleStatusLabel(simulation);
-  const actionPlan = buildMonthlyActionPlan(simulation);
   const personalized = getPersonalizedResultMessage({
     hasResult: true,
     confidenceLabel: simulation.confidenceBand,
@@ -83,24 +79,6 @@ export function HeroResult({
         </div>
 
         <div className="grid gap-3 rounded-[30px] border border-app-border bg-white/84 p-4 shadow-[0_18px_40px_-30px_rgba(36,22,47,0.35)]">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-app-muted">Próxima fecha clave</p>
-            <p className="mt-2 text-lg font-semibold text-app-foreground">{actionPlan?.nextKeyDateLabel ?? formatDateLong(simulation.ovulationDate)}</p>
-          </div>
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-app-muted">Siguiente paso</p>
-            <p className="mt-2 text-sm font-semibold text-app-foreground">{actionPlan?.suggestedAction ?? "Guardá recordatorios"}</p>
-          </div>
-          {onNextAction ? (
-            <button
-              type="button"
-              onClick={onNextAction}
-              className="vf-press inline-flex h-11 items-center justify-center rounded-full bg-app-primary px-4 text-sm font-semibold text-white transition hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-app-primary/20"
-            >
-              Ir al calendario
-              <ArrowRight className="ml-2 size-4" />
-            </button>
-          ) : null}
           <div className="inline-flex items-center rounded-full border border-app-border bg-white px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-app-muted">
             Estimación educativa
           </div>

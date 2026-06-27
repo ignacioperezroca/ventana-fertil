@@ -19,27 +19,19 @@ import { PublicShareCard } from "@/components/share/PublicShareCard";
 import { ResultImageExport } from "@/components/share/ResultImageExport";
 import { ShareResultDialog } from "@/components/share/ShareResultDialog";
 import { StickyResultActions } from "@/components/share/StickyResultActions";
-import { SimpleCalendarActions } from "@/components/calendar/SimpleCalendarActions";
-import { NextCyclePrompt } from "@/components/retention/NextCyclePrompt";
-import { PrivacyTrustCard } from "@/components/trust/PrivacyTrustCard";
 import { TrustDrawer } from "@/components/trust/TrustDrawer";
-import { DisplayPreferences } from "@/components/settings/DisplayPreferences";
-import { FeedbackCard } from "@/components/feedback/FeedbackCard";
 import { InstallPromptCard } from "@/components/pwa/InstallPromptCard";
 import { LaunchChecklist } from "@/components/dev/LaunchChecklist";
 import { AppSkeleton } from "@/components/ui/AppSkeleton";
 import { ToastStack, createToastId, type ToastMessage, type ToastTone } from "@/components/ui/toast";
-import { CycleHistory } from "@/components/history/CycleHistory";
 import { trackEvent } from "@/lib/analytics";
-import { buildNextPeriodReminderEvent, buildNextPeriodReminderIcs, formatDateLong } from "@/lib/cycle";
 import { createGrowthDemoState } from "@/lib/demo";
 import { calculateSimpleSimulation } from "@/lib/fertility";
 import { getResultStateFromSimulation } from "@/lib/personalization";
 import { buildResultCopyText } from "@/lib/resultCopy";
 import { createDefaultSimpleState, loadSimpleStateWithMeta, saveSimpleState, type SimpleCoreState } from "@/lib/simple-storage";
-import { loadPreferences, savePreferences } from "@/lib/preferences";
 import { getOrCreateOnboardingVariant, getOnboardingVariantCopy } from "@/content/onboardingVariants";
-import { loadMotionPreference, saveMotionPreference, getSystemReducedMotion } from "@/lib/motionPreferences";
+import { getSystemReducedMotion } from "@/lib/motionPreferences";
 import { warnForbiddenCopy } from "@/lib/copyGuard";
 import { copyResultToClipboard } from "@/lib/share";
 import { getSimpleDateNotice, validateSimpleState } from "@/lib/validation";
@@ -57,18 +49,6 @@ function formatUpdatedAtLabel(value: string | null) {
   }).format(date);
 }
 
-function downloadFile(filename: string, contents: string, type = "text/calendar;charset=utf-8") {
-  const blob = new Blob([contents], { type });
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = url;
-  link.download = filename;
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  URL.revokeObjectURL(url);
-}
-
 export default function VentanaFertilApp() {
   const mounted = useSyncExternalStore(
     () => () => undefined,
@@ -77,8 +57,6 @@ export default function VentanaFertilApp() {
   );
   const [initialLoad] = useState(() => loadSimpleStateWithMeta());
   const [form, setForm] = useState<SimpleCoreState>(() => initialLoad.state ?? createDefaultSimpleState());
-  const [preferences, setPreferences] = useState(() => loadPreferences());
-  const [motionPreference, setMotionPreference] = useState(() => loadMotionPreference());
   const [onboardingVariant] = useState(() => getOrCreateOnboardingVariant());
   const [demoPreview, setDemoPreview] = useState(Boolean(initialLoad.state?.isDemo));
   const [savedAt, setSavedAt] = useState<string | null>(() => (initialLoad.state?.isDemo ? null : initialLoad.updatedAt ?? null));
@@ -98,7 +76,6 @@ export default function VentanaFertilApp() {
 
   const inputRef = useRef<HTMLDivElement | null>(null);
   const resultRef = useRef<HTMLDivElement | null>(null);
-  const calendarRef = useRef<HTMLDivElement | null>(null);
   const persistedStateRef = useRef<SimpleCoreState | null>(initialLoad.state && !initialLoad.state.isDemo ? initialLoad.state : null);
   const resultFlashTimeoutRef = useRef<number | null>(null);
   const initialSnapshotRef = useRef({
@@ -148,13 +125,11 @@ export default function VentanaFertilApp() {
   const simulation = simulationBundle.simulation;
   const copyText = useMemo(() => buildResultCopyText(simulation), [simulation]);
   const dateNotice = useMemo(() => getSimpleDateNotice(form.lastPeriodStart), [form.lastPeriodStart]);
-  const showPercentages = !preferences.lowAnxietyMode;
-  const lowAnxietyMode = preferences.lowAnxietyMode;
+  const lowAnxietyMode = false;
   const hasResult = Boolean(form.lastPeriodStart && !validation.hasErrors);
   const updatedLabel = formatUpdatedAtLabel(savedAt);
-  const showHistoryTeaser = initialLoad.entryCount > 0;
   const onboardingCopy = useMemo(() => getOnboardingVariantCopy(onboardingVariant), [onboardingVariant]);
-  const reducedMotion = useMemo(() => getSystemReducedMotion() || motionPreference, [motionPreference]);
+  const reducedMotion = useMemo(() => getSystemReducedMotion(), []);
   const personalizedState = useMemo(() => getResultStateFromSimulation(simulation), [simulation]);
 
   useEffect(() => {
@@ -286,42 +261,6 @@ export default function VentanaFertilApp() {
     }
   }, [copyText, demoPreview, pushToast]);
 
-  const handleCopyNextPeriodDate = useCallback(async () => {
-    const reminder = buildNextPeriodReminderEvent(form.lastPeriodStart, form.averageCycleLength);
-    if (!reminder) {
-      pushToast("warning", "Sin recordatorio", "Primero cargá una fecha válida.");
-      return;
-    }
-
-    try {
-      await copyResultToClipboard(formatDateLong(reminder.date));
-      pushToast("success", "Fecha copiada", "La fecha estimada quedó lista para pegar.");
-    } catch (error) {
-      pushToast("danger", "No se pudo copiar", error instanceof Error ? error.message : "Probá de nuevo.");
-    }
-  }, [form.averageCycleLength, form.lastPeriodStart, pushToast]);
-
-  const handleDownloadNextPeriod = useCallback(() => {
-    const ics = buildNextPeriodReminderIcs(form.lastPeriodStart, form.averageCycleLength);
-    if (!ics) {
-      pushToast("warning", "Sin calendario", "Primero necesitamos una fecha válida para crear recordatorios.");
-      return;
-    }
-
-    try {
-      downloadFile("ventana-fertil-proximo-periodo.ics", ics);
-      trackEvent("next_period_reminder_downloaded", {
-        hasResult: true,
-        isDemo: demoPreview,
-        source: "next_cycle_prompt",
-        eventVersion: "g1",
-      });
-      pushToast("success", "Recordatorio descargado", "Se generó el evento para el próximo período.");
-    } catch {
-      pushToast("danger", "No se pudo descargar", "Probá de nuevo en un navegador con descargas habilitadas.");
-    }
-  }, [demoPreview, form.averageCycleLength, form.lastPeriodStart, pushToast]);
-
   const handleOpenTrust = useCallback(() => {
     trackEvent("privacy_opened", { hasResult, isDemo: demoPreview, source: "input_card", eventVersion: "g1" });
     setTrustOpen(true);
@@ -330,33 +269,6 @@ export default function VentanaFertilApp() {
   const handleOpenShareDialog = useCallback(() => {
     setShareDialogOpen(true);
   }, []);
-
-  const handleOpenCalendar = useCallback(() => {
-    calendarRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-  }, []);
-
-  const handlePreferenceChange = useCallback(
-    (nextShowPercentages: boolean) => {
-      const next = { lowAnxietyMode: !nextShowPercentages };
-      setPreferences(next);
-      savePreferences(next);
-      if (!nextShowPercentages) {
-        trackEvent("low_anxiety_mode_enabled", { hasResult, isDemo: demoPreview, source: "display_preferences", eventVersion: "g1" });
-      }
-    },
-    [demoPreview, hasResult],
-  );
-
-  const handleMotionPreferenceChange = useCallback(
-    (nextReducedMotion: boolean) => {
-      setMotionPreference(nextReducedMotion);
-      saveMotionPreference(nextReducedMotion);
-      if (typeof document !== "undefined") {
-        document.documentElement.classList.toggle("vf-reduce-motion", nextReducedMotion || getSystemReducedMotion());
-      }
-    },
-    [],
-  );
 
   const safeLastPeriod = form.lastPeriodStart || "";
 
@@ -433,7 +345,6 @@ export default function VentanaFertilApp() {
                 isDemo={demoPreview || form.isDemo}
                 lowAnxietyMode={lowAnxietyMode}
                 onExplain={() => setExplanationOpen(true)}
-                onNextAction={handleOpenCalendar}
               />
 
               <ConfidenceExplainer simulation={simulation} historyCount={initialLoad.entryCount} regularity={form.regularity} />
@@ -451,38 +362,6 @@ export default function VentanaFertilApp() {
 
               <ResultImageExport simulation={simulation} onToast={pushToast} />
 
-              <div className="grid gap-4 lg:grid-cols-[0.95fr_1.05fr]" ref={calendarRef}>
-                <NextCyclePrompt lastPeriodStart={safeLastPeriod} averageCycleLength={form.averageCycleLength} onDownload={handleDownloadNextPeriod} onCopyDate={handleCopyNextPeriodDate} />
-                <SimpleCalendarActions simulation={simulation} lastPeriodStart={safeLastPeriod} averageCycleLength={form.averageCycleLength} onToast={pushToast} isDemo={demoPreview || form.isDemo} />
-              </div>
-
-              <PrivacyTrustCard isDemo={demoPreview || form.isDemo} />
-
-              <details className="rounded-[30px] border border-app-border bg-[rgba(255,255,255,0.92)] p-4 shadow-[0_22px_70px_-44px_rgba(36,22,47,0.32)] sm:p-5">
-                <summary className="cursor-pointer list-none text-sm font-semibold text-app-foreground">
-                  Más opciones
-                </summary>
-                <div className="mt-4 grid gap-4">
-                  <DisplayPreferences
-                    showPercentages={showPercentages}
-                    reducedMotion={motionPreference}
-                    onChange={handlePreferenceChange}
-                    onMotionChange={handleMotionPreferenceChange}
-                  />
-                  <FeedbackCard hasResult={hasResult} isDemo={demoPreview || form.isDemo} onNotify={pushToast} />
-                </div>
-              </details>
-
-              {showHistoryTeaser ? (
-                <details className="rounded-[30px] border border-app-border bg-[rgba(255,255,255,0.92)] p-4 shadow-[0_22px_70px_-44px_rgba(36,22,47,0.32)] sm:p-5">
-                  <summary className="cursor-pointer list-none text-sm font-semibold text-app-foreground">
-                    Tenés {initialLoad.entryCount} ciclos cargados. Ver histórico
-                  </summary>
-                  <div className="mt-4">
-                    <CycleHistory state={simulationBundle.fullState} simulation={simulation} lowAnxietyMode={lowAnxietyMode} onNotify={pushToast} />
-                  </div>
-                </details>
-              ) : null}
             </div>
           </MotionPage>
         )}
@@ -505,9 +384,7 @@ export default function VentanaFertilApp() {
         <LaunchChecklist />
       </main>
 
-      {hasResult ? (
-        <StickyResultActions onWhatsApp={handleOpenShareDialog} onCopy={handleCopyResult} onCalendar={handleOpenCalendar} />
-      ) : null}
+      {hasResult ? <StickyResultActions onWhatsApp={handleOpenShareDialog} onCopy={handleCopyResult} /> : null}
 
       <VisualExplanationSheet open={explanationOpen} onClose={() => setExplanationOpen(false)} />
       <ShareResultDialog open={shareDialogOpen} message={copyText} onClose={() => setShareDialogOpen(false)} onCopy={handleCopyResult} isDemo={demoPreview || form.isDemo} />

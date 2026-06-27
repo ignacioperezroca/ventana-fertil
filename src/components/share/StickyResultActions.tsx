@@ -1,22 +1,19 @@
 "use client";
 
-import { CalendarDays, Copy, MessageCircleMore } from "lucide-react";
+import { Copy, MessageCircleMore } from "lucide-react";
 
 export function StickyResultActions({
   onWhatsApp,
   onCopy,
-  onCalendar,
 }: {
   onWhatsApp: () => void;
   onCopy: () => void;
-  onCalendar: () => void;
 }) {
   return (
     <div className="fixed inset-x-0 bottom-0 z-[55] px-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] sm:px-6 lg:hidden">
       <div className="mx-auto flex max-w-3xl gap-2 rounded-[24px] border border-app-border bg-[rgba(255,255,255,0.92)] p-2 shadow-[0_24px_60px_-30px_rgba(36,22,47,0.5)] backdrop-blur-xl">
         <ActionButton icon={MessageCircleMore} label="WhatsApp" onClick={onWhatsApp} tone="primary" />
         <ActionButton icon={Copy} label="Copiar" onClick={onCopy} tone="secondary" />
-        <ActionButton icon={CalendarDays} label="Calendario" onClick={onCalendar} tone="secondary" />
       </div>
     </div>
   );
@@ -28,7 +25,7 @@ function ActionButton({
   onClick,
   tone,
 }: {
-  icon: typeof CalendarDays;
+  icon: typeof Copy;
   label: string;
   onClick: () => void;
   tone: "primary" | "secondary";
@@ -46,4 +43,3 @@ function ActionButton({
     </button>
   );
 }
-
